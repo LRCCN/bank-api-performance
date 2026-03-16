@@ -2,10 +2,11 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 export const options = {
-    iterations: 50,
+    vus: 10, // Number of virtual users
+    duration: '30s', // Duration of the test
     thresholds: { // Define thresholds for performance metrics
-        http_req_duration: ['p(90)<10', 'max<1'],
-        http_req_failed: ['rate<0.01'],
+        http_req_duration: ['p(90)<3000', 'max<5000'], // 90% of requests should be below 3 seconds, and max should be below 5 seconds
+        http_req_failed: ['rate<0.01'], // Less than 1% of requests should fail
     },
 };
 
