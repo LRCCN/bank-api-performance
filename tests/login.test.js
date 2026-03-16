@@ -2,11 +2,14 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 export const options = {
-    vus: 10, // Number of virtual users
-    duration: '30s', // Duration of the test
-    thresholds: { // Define thresholds for performance metrics
-        http_req_duration: ['p(90)<3000', 'max<5000'], // 90% of requests should be below 3 seconds, and max should be below 5 seconds
-        http_req_failed: ['rate<0.01'], // Less than 1% of requests should fail
+    stages: [
+        { duration: '5s', target: 10 }, // Ramp up to 10 virtual users over 30 seconds
+        { duration: '20s', target: 10 },   // Stay at 10 virtual users for 1 minute
+        { duration: '5s', target: 0 },   // Ramp down to 0 virtual users over 30 seconds
+    ],
+    thresholds: {                                         // Define thresholds for performance metrics
+        http_req_duration: ['p(90)<3000', 'max<5000'],   // 90% of requests should be below 3 seconds, and max should be below 5 seconds
+        http_req_failed: ['rate<0.01'],                 // Less than 1% of requests should fail
     },
 };
 
