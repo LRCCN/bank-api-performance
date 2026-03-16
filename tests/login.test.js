@@ -1,6 +1,6 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
-const postLogin = JSON.parse(open('./fixtures/postLogin.json'));
+const postLogin = JSON.parse(open('../fixtures/postLogin.json'));
 
 export const options = {
     stages: [
@@ -16,6 +16,9 @@ export const options = {
 
 export default function () {
     const url = 'http://localhost:3000/login';
+
+    postLogin.username = 'luiz.neto';
+    console.log(postLogin);
     const payload = JSON.stringify(postLogin);
 
     const params = {
@@ -25,6 +28,7 @@ export default function () {
     };
 
     const res = http.post(url, payload, params);
+
     check(res, {
         'Validate status code is 200': (r) => r.status === 200,
         'Validate token is string': (r) => typeof r.json().token === 'string',
