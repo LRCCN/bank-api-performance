@@ -1,12 +1,13 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
+import { takeBaseUrl } from '../Utils/variables.js';
 const postLogin = JSON.parse(open('../fixtures/postLogin.json'));
 
 export const options = {
     stages: [
-        { duration: '5s', target: 10 }, // Ramp up to 10 virtual users over 30 seconds
+        { duration: '5s', target: 10 },     // Ramp up to 10 virtual users over 30 seconds
         { duration: '20s', target: 10 },   // Stay at 10 virtual users for 1 minute
-        { duration: '5s', target: 0 },   // Ramp down to 0 virtual users over 30 seconds
+        { duration: '5s', target: 0 },    // Ramp down to 0 virtual users over 30 seconds
     ],
     thresholds: {                                         // Define thresholds for performance metrics
         http_req_duration: ['p(90)<3000', 'max<5000'],   // 90% of requests should be below 3 seconds, and max should be below 5 seconds
@@ -15,10 +16,9 @@ export const options = {
 };
 
 export default function () {
-    const url = 'http://localhost:3000/login';
+    const url = takeBaseUrl() + '/login';
 
     postLogin.username = 'luiz.neto';
-    console.log(postLogin);
     const payload = JSON.stringify(postLogin);
 
     const params = {
