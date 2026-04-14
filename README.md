@@ -9,22 +9,10 @@ under different traffic conditions.
 
 # Introduction
 
-This project provides automated **performance tests for a Bank API**
-using the **k6** load testing framework.
+Automated performance tests for a Bank API using **k6** and **JavaScript**.
 
-The objective is to simulate realistic user traffic against the API and
-measure metrics such as:
-
--   Response time
--   Throughput
--   Error rate
--   System stability under load
-
-These tests help identify performance bottlenecks and ensure the API can
-handle expected production workloads.
-
-The tests are implemented in **JavaScript**, allowing flexible scripting
-and easy integration with CI/CD pipelines.
+The API used as the target for these tests is available at:
+[https://github.com/juliodelimas/banco-api](https://github.com/juliodelimas/banco-api)
 
 ------------------------------------------------------------------------
 
@@ -53,65 +41,9 @@ The following technologies are used in this project:
 
 ------------------------------------------------------------------------
 
-# Goal of Each Group of Files
+# Installation
 
-### tests/
-
-Contains the **main performance test scripts** executed by **k6**.
-
-Examples of scenarios implemented here may include:
-
--   Load testing
--   Stress testing
--   Spike testing
-
-Each script defines:
-
--   Virtual users
--   Test duration
--   API endpoints being tested
--   Checks and thresholds
-
-------------------------------------------------------------------------
-
-### fixtures/
-
-Contains **static test data** used during performance testing.
-
-Examples:
-
--   Request payloads
--   Authentication data
--   Mock transaction inputs
-
-This helps maintain separation between **test logic and test data**.
-
-------------------------------------------------------------------------
-
-### helpers/
-
-Utility modules that provide reusable logic, such as:
-
--   Authentication helpers
--   Request builders
--   Common validations
--   Shared functions used across multiple tests
-
-------------------------------------------------------------------------
-
-### config/
-
-Configuration files responsible for defining:
-
--   Environment-specific configurations (e.g. `config.local.json`)
--   Base URL fallback when `BASE_URL` environment variable is not set
--   Test execution parameters
-
-------------------------------------------------------------------------
-
-# Installation Mode
-
-## 1 -- Install k6
+## 1 - Install k6
 
 Install **k6** following the official documentation:
 
@@ -137,7 +69,7 @@ sudo apt install k6
 
 ------------------------------------------------------------------------
 
-## 2 -- Clone the repository
+## 2 - Clone the repository
 
 ``` bash
 git clone https://github.com/LRCCN/bank-api-performance.git
@@ -148,39 +80,6 @@ Navigate to the project directory:
 ``` bash
 cd bank-api-performance
 ```
-
-------------------------------------------------------------------------
-
-## 3 -- Configure environment variables
-
-Before executing the tests, you must define the API base URL. There are
-two ways:
-
-**Option 1 — Environment variable (recommended):**
-
-Linux / Mac:
-
-``` bash
-export BASE_URL=https://api.yourbank.com
-```
-
-Windows (PowerShell):
-
-``` powershell
-$env:BASE_URL="https://api.yourbank.com"
-```
-
-**Option 2 — Config file (local fallback):**
-
-Edit `config/config.local.json` and set the `baseUrl` value:
-
-``` json
-{
-    "baseUrl": "https://api.yourbank.com"
-}
-```
-
-If `BASE_URL` is set, it takes priority over the config file.
 
 ------------------------------------------------------------------------
 
