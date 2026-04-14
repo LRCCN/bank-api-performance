@@ -47,9 +47,8 @@ The following technologies are used in this project:
     ├── tests/                # Main performance test scenarios
     ├── fixtures/             # Test data used during execution
     ├── helpers/              # Utility functions shared across tests
-    ├── configs/              # Test configuration files
+    ├── config/               # Test configuration files
     │── utils/                # Utility functions
-    ├── package.json          # Project dependencies
     ├── README.md             # Project documentation
 
 ------------------------------------------------------------------------
@@ -100,13 +99,13 @@ Utility modules that provide reusable logic, such as:
 
 ------------------------------------------------------------------------
 
-### configs/
+### config/
 
 Configuration files responsible for defining:
 
--   Environment-specific configurations
+-   Environment-specific configurations (e.g. `config.local.json`)
+-   Base URL fallback when `BASE_URL` environment variable is not set
 -   Test execution parameters
--   Threshold definitions
 
 ------------------------------------------------------------------------
 
@@ -154,12 +153,10 @@ cd bank-api-performance
 
 ## 3 -- Configure environment variables
 
-Before executing the tests, you must define the API base URL using the
-environment variable:
+Before executing the tests, you must define the API base URL. There are
+two ways:
 
-BASE_URL
-
-Example:
+**Option 1 — Environment variable (recommended):**
 
 Linux / Mac:
 
@@ -173,20 +170,34 @@ Windows (PowerShell):
 $env:BASE_URL="https://api.yourbank.com"
 ```
 
+**Option 2 — Config file (local fallback):**
+
+Edit `config/config.local.json` and set the `baseUrl` value:
+
+``` json
+{
+    "baseUrl": "https://api.yourbank.com"
+}
+```
+
+If `BASE_URL` is set, it takes priority over the config file.
+
 ------------------------------------------------------------------------
 
 # Project Execution
 
 To execute a performance test using **k6**, run:
 
+**Login test:**
+
 ``` bash
-k6 run tests/authentication/login.test.js
+k6 run tests/login.test.js
 ```
 
-Example:
+**Transfers test:**
 
 ``` bash
-k6 run tests/load-test.js
+k6 run tests/transfers.test.js
 ```
 
 ------------------------------------------------------------------------
@@ -199,7 +210,7 @@ in real time and export an HTML report.
 Run the following command:
 
 ``` bash
-K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run tests/load-test.js
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run tests/login.test.js
 ```
 
 This command will:
